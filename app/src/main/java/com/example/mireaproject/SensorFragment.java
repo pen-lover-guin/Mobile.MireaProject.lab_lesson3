@@ -1,6 +1,12 @@
 package com.example.mireaproject;
 
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,6 +14,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -15,11 +28,20 @@ import android.view.ViewGroup;
  * Use the {@link SensorFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SensorFragment extends Fragment {
+public class SensorFragment extends Fragment implements SensorEventListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private TextView azimuthTextView;
+    private TextView pitchTextView;
+    private TextView rollTextView;
+    private TextView humidityTextView;
+    private TextView lightTextView;
+    private SensorManager sensorManager;
+    private Sensor accelerometerSensor;
+    private Sensor humiditySensor;
+    private Sensor lightSensor;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -60,8 +82,59 @@ public class SensorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sensor, container, false);
+        View view = inflater.inflate(R.layout.fragment_sensor, container, false);
+        sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
+        accelerometerSensor = sensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        humiditySensor = sensorManager
+                .getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
+        lightSensor = sensorManager
+                .getDefaultSensor(Sensor.TYPE_LIGHT);
+        azimuthTextView = view.findViewById(R.id.textViewAzimuth);
+        pitchTextView = view.findViewById(R.id.textViewPitch);
+        rollTextView = view.findViewById(R.id.textViewRoll);
+        humidityTextView = view.findViewById(R.id.textViewGravity);
+        lightTextView = view.findViewById(R.id.textViewLight);
+
+        return view;
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        sensorManager.registerListener(this, accelerometerSensor,
+                SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, humiditySensor,
+                SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, lightSensor,
+                SensorManager.SENSOR_DELAY_NORMAL);
+    }
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            float valueAzimuth = event.values[0];
+            float valuePitch = event.values[1];
+            float valueRoll = event.values[2];
+            azimuthTextView.setText("Azimuth: " + valueAzimuth);
+            pitchTextView.setText("Pitch: " + valuePitch);
+            rollTextView.setText("Roll: " + valueRoll);
+        }
+        if (event.sensor.getType() == Sensor.TYPE_RELATIVE_HUMIDITY){
+            float humidity = event.values[0];
+            humidityTextView.setText("Relative humidity:" + humidity);
+        }
+        if (event.sensor.getType() == Sensor.TYPE_LIGHT){
+            float light = event.values[0];
+            lightTextView.setText("Light:" + light);
+        }
+    }
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
 }

@@ -25,6 +25,10 @@
             android:icon="@drawable/ic_menu_share"
             android:title="Calculate"
             tools:ignore="HardcodedText" />
+        <item
+            android:id="@+id/nav_sensor"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Sensor" />
 
 
     </group>
