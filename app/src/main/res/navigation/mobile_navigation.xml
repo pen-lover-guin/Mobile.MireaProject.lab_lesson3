@@ -42,8 +42,18 @@
         tools:layout="@layout/fragment_send" />
     <fragment
         android:id="@+id/nav_brouser"
-        android:name="com.example.mireaproject.WebViewFragment" />
+        android:name="com.example.mireaproject.WebViewFragment"
+        android:label="Brouser" />
     <fragment
         android:id="@+id/nav_calculate"
-        android:name="com.example.mireaproject.CalculateFragment" />
+        android:name="com.example.mireaproject.CalculateFragment"
+        android:label="Calculate" />
+    <fragment
+        android:id="@+id/nav_photo"
+        android:name="com.example.mireaproject.PhotoFragment"
+        android:label="Photo" />
+    <fragment
+        android:id="@+id/nav_media_record"
+        android:name="com.example.mireaproject.MediaRecordFragment"
+        android:label="MediaRecord" />
 </navigation>

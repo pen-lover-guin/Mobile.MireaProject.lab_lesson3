@@ -41,9 +41,18 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/menu_send" />
             <item
-                android:id="@+id/nav_calculate"
+            android:id="@+id/nav_calculate"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Brouser" />
+            <item
+            android:id="@+id/nav_photo"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Photo" />
+            <item
+                android:id="@+id/nav_media_record"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Brouser" />
+                android:title="MediaRecord" />
+
         </menu>
     </item>
 
